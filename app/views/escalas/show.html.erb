@@ -1,0 +1,10 @@
+<%= render "home/head" %>
+<p style="color: green"><%= notice %></p>
+
+
+<%= month_calendar do |date| %>
+  <%= date.strftime("%d") %>
+  
+  <% end %>
+
+

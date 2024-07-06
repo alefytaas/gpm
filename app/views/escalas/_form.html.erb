@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <%= form_with(model: escala, local: true, html: { class: "form" }) do |form| %>
+        <% if escala.errors.any? %>
+          <div class="alert alert-danger">
+            <h2><%= pluralize(escala.errors.count, "error") %> prohibited this escala from being saved:</h2>
+
+            <ul>
+              <% escala.errors.full_messages.each do |error_message| %>
+                <li><%= error_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="mb-3">
+          <%= form.label :setor, class: "form-label" %>
+          <%= form.text_field :setor, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :mes_ref, class: "form-label" %>
+          <%= form.date_select :mes_ref, {
+            order: [:month, :year],
+            start_year: Date.current.year,
+            end_year: Date.current.year + 10,
+            default: { day: 1 }
+            }, class: "form-control" %>
+        </div>
+
+        <%= form.hidden_field :id_medico_adm, value: current_user.id %>
+
+        <div class="text-center mb-3"> <!-- Adicionando margem embaixo do botão -->
+          <%= form.submit "Save", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

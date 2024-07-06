@@ -1,0 +1,2 @@
+class Escala < ApplicationRecord
+end

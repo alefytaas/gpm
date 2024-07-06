@@ -1,14 +1,19 @@
+<%if @escala %><%start_date = @escala.mes_ref%><%end%>
 <div class="simple-calendar">
   <div class="calendar-heading bg-light p-3 mb-3 d-flex justify-content-between align-items-center">
     <time datetime="<%= start_date.strftime('%Y-%m') %>" class="calendar-title h4 mb-0">
       <%= t('date.month_names')[start_date.month] %> <%= start_date.year %>
     </time>
 
+    <%if @escala %><span class= mt-2><%= @escala.setor %></span><%else%>
+
     <nav class="mt-2">
-      <%= link_to t('simple_calendar.previous', default: 'Previous'), calendar.url_for_previous_view, class: "btn btn-outline-primary mr-2" %>
-      <%= link_to t('simple_calendar.today', default: 'Today'), calendar.url_for_today_view, class: "btn btn-outline-success" %>
-      <%= link_to t('simple_calendar.next', default: 'Next'), calendar.url_for_next_view, class: "btn btn-outline-primary" %>
+      <%= link_to t('simple_calendar.previous', default: '<'), calendar.url_for_previous_view, class: "btn btn-outline-primary mr-2" %>
+      <%= link_to t('simple_calendar.today', default: 'Atual'), calendar.url_for_today_view, class: "btn btn-outline-success" %>
+      <%= link_to t('simple_calendar.next', default: '>'), calendar.url_for_next_view, class: "btn btn-outline-primary" %>
     </nav>
+
+    <%end%>
   </div>
 
 <table class="table table-bordered table-striped">

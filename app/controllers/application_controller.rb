@@ -8,4 +8,14 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :dt_nasc, :user_type])
     devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :dt_nasc, :user_type])
   end
+
+  private
+
+  def adm_escala?
+    if current_user.user_type == "Medico_adm"
+      return true
+    else
+      return false
+    end
+  end
 end

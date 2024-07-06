@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :escalas
   get 'home/index'
   devise_for :users do
     get 'logout' => 'devise/sessions#destroy'
