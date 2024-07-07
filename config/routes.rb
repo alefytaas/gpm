@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :jornadas
   resources :escalas
   get 'home/index'
   devise_for :users do

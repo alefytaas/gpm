@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_07_122327) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_07_150605) do
   create_table "escala_users", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "escala_id", null: false
@@ -26,6 +26,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_122327) do
     t.date "mes_ref"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "id_medicos"
+    t.integer "medicos"
+    t.string "array"
+    t.string "true"
+  end
+
+  create_table "jornadas", force: :cascade do |t|
+    t.date "data"
+    t.string "turno"
+    t.integer "user_id", null: false
+    t.integer "escala_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["escala_id"], name: "index_jornadas_on_escala_id"
+    t.index ["user_id"], name: "index_jornadas_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -46,4 +61,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_122327) do
 
   add_foreign_key "escala_users", "escalas"
   add_foreign_key "escala_users", "users"
+  add_foreign_key "jornadas", "escalas"
+  add_foreign_key "jornadas", "users"
 end

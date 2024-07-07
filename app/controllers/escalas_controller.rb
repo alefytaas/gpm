@@ -39,7 +39,7 @@ class EscalasController < ApplicationController
   end
   def create
     @escala = Escala.new(escala_params)
-    
+    @jornada.escala_id = params[:escala_id] # Certifique-se de configurar o id da escala corretamente
 
     respond_to do |format|
       if @escala.save

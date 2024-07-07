@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  data: 2024-07-07
+  turno: MyString
+  user: one
+  escala: one
+
+two:
+  data: 2024-07-07
+  turno: MyString
+  user: two
+  escala: two

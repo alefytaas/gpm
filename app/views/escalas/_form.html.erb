@@ -43,7 +43,6 @@
         <%= check_box_tag "escala[user_ids][]", medico.id, checked, class: "form-check-input", id: "user_#{medico.id}" %>
         <%= label_tag "user_#{medico.id}", medico.first_name + " " + medico.last_name, class: "form-check-label" %>
       </div>
-      <p><%= form.object.id_medico_adm%></p>
     <% end %>
     
   </div>

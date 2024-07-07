@@ -30,6 +30,16 @@
         <tr>
           <% week.each do |day| %>
             <%= content_tag :td, class: calendar.td_classes_for(day) do %>
+            <%if @escala%>
+              <%= link_to 'Adicionar Jornada', new_jornada_path(escala_id: @escala.id, data: day) %>
+            <%else%>
+              <% @jornadas.each do |jornada| %>
+                <%if day == jornada.data%>
+                  
+                <%end%>
+              <%end%>
+            <%end%>
+            
               <% instance_exec(day, calendar.sorted_events_for(day), &passed_block) %>
             <% end %>
           <% end %>

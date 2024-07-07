@@ -1,0 +1,34 @@
+<%= form_with(model: [ @jornada], local: true) do |form| %>
+  <% if @jornada.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@jornada.errors.count, "erro") %> proibiram esta jornada de ser salva:</h2>
+
+      <ul>
+        <% @jornada.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :data %>
+    <%= form.date_select :data, selected: @jornada.data %>
+  </div>
+
+  <div class="field">
+    <%= form.label :turno %>
+    <%= form.select :turno, options_for_select(['Manhã', 'Tarde', 'Noite'], @jornada.turno) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.collection_select :user_id, @escala.users, :id, :first_name, prompt: true %>
+  </div>
+
+  <%= form.hidden_field :escala_id, value: @escala.id.to_i %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

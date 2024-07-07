@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Jornadas</h1>
+
+<div id="jornadas">
+  <% @jornadas.each do |jornada| %>
+    <%= render jornada %>
+    <p>
+      <%= link_to "Show this jornada", jornada %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New jornada", new_jornada_path %>
