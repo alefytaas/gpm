@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_06_152915) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_07_122327) do
+  create_table "escala_users", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "escala_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["escala_id"], name: "index_escala_users_on_escala_id"
+    t.index ["user_id"], name: "index_escala_users_on_user_id"
+  end
+
   create_table "escalas", force: :cascade do |t|
     t.integer "id_medico_adm"
     t.string "setor"
@@ -35,4 +44,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_06_152915) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "escala_users", "escalas"
+  add_foreign_key "escala_users", "users"
 end

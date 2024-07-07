@@ -1,7 +1,11 @@
+<% if current_user.user_type != "Medico_adm"%>
+  <% redirect_to root_path %>
+<%else%>
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <%= form_with(model: escala, local: true, html: { class: "form" }) do |form| %>
+      <%= form.hidden_field :id_medico_adm, value: current_user.id %>
         <% if escala.errors.any? %>
           <div class="alert alert-danger">
             <h2><%= pluralize(escala.errors.count, "error") %> prohibited this escala from being saved:</h2>
@@ -29,7 +33,24 @@
             }, class: "form-control" %>
         </div>
 
-        <%= form.hidden_field :id_medico_adm, value: current_user.id %>
+       <div class="mb-3">
+  <%= form.label :users, "Médicos:", class: "form-label" %>
+  <div>
+    <% @Medicos.each do |medico| %>
+      <div class="form-check">
+        <% always_selected = medico.id == current_user.id %> <!-- Exemplo baseado em um atributo `role` -->
+        <% checked = always_selected %>
+        <%= check_box_tag "escala[user_ids][]", medico.id, checked, class: "form-check-input", id: "user_#{medico.id}" %>
+        <%= label_tag "user_#{medico.id}", medico.first_name + " " + medico.last_name, class: "form-check-label" %>
+      </div>
+      <p><%= form.object.id_medico_adm%></p>
+    <% end %>
+    
+  </div>
+</div>
+
+
+        
 
         <div class="text-center mb-3"> <!-- Adicionando margem embaixo do botão -->
           <%= form.submit "Save", class: "btn btn-primary" %>
@@ -38,3 +59,4 @@
     </div>
   </div>
 </div>
+<%end%>

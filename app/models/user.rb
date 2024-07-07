@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :escala_users , dependent: :destroy
+  has_many :escalas, through: :escala_users
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

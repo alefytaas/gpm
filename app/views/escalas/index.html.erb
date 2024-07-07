@@ -13,7 +13,7 @@
   <div class="row mt-3"> <!-- Adicionando uma margem top de 3 -->
     <div class="col-md-8 offset-md-2">
       <div id="escalas">
-        <% @escalas.each do |escala| %>
+        <% current_user.escalas.each do |escala| %>
           <div class="card mb-3">
             <div class="card-body">
               <%= render escala %>
