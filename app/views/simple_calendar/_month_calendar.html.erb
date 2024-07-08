@@ -1,11 +1,13 @@
-<%if @escala %><%start_date = @escala.mes_ref%><%end%>
+<%= params["controller"]%>
+<%if params["controller"] == "escalas" %><%start_date = @escala.mes_ref%><%end%>
+
 <div class="simple-calendar">
   <div class="calendar-heading bg-light p-3 mb-3 d-flex justify-content-between align-items-center">
     <time datetime="<%= start_date.strftime('%Y-%m') %>" class="calendar-title h4 mb-0">
       <%= t('date.month_names')[start_date.month] %> <%= start_date.year %>
     </time>
 
-    <%if @escala %><span class= mt-2><%= @escala.setor %></span><%else%>
+    <%if params["controller"] == "escalas" %><span class= mt-2><%= @escala.setor %></span><%else%>
 
     <nav class="mt-2">
       <%= link_to t('simple_calendar.previous', default: '<'), calendar.url_for_previous_view, class: "btn btn-outline-primary mr-2" %>
@@ -26,23 +28,36 @@
     </thead>
 
     <tbody>
+
       <% date_range.each_slice(7) do |week| %>
         <tr>
           <% week.each do |day| %>
             <%= content_tag :td, class: calendar.td_classes_for(day) do %>
-            <%if @escala%>
-              <%= link_to 'Adicionar Jornada', new_jornada_path(escala_id: @escala.id, data: day) %>
-            <%else%>
-              <% @jornadas.each do |jornada| %>
+            <%= day.strftime('%d') %>
+            <%if params["controller"] == "escalas"%>
+            <%@jornadas.each do |jornada| %>
                 <%if day == jornada.data%>
-                  
+                  <p><%= jornada.turno%></p>
+                  <p><%= @escala.setor%></p>
                 <%end%>
               <%end%>
+              <%if @escala.id_medico_adm == current_user.id%>
+                <%= link_to 'Adicionar Jornada', new_jornada_path(escala_id: @escala.id, data: day) %>
+              <%end%>
             <%end%>
-            
-              <% instance_exec(day, calendar.sorted_events_for(day), &passed_block) %>
+            <%if params["controller"] == "home"%>
+              <%current_user.escalas.each do |escala|%>
+                <%escala.jornadas.each do |jornada|%>
+                  <%if day == jornada.data and jornada.user_id == current_user.id%>
+                    <p><%= jornada.turno%></p>
+                    <p><%= @escala.find(jornada.escala_id).setor%></p>
+                  <%end%>
+                <%end%>
+              <%end%>
             <% end %>
           <% end %>
+          <%end%>
+
         </tr>
       <% end %>
     </tbody>

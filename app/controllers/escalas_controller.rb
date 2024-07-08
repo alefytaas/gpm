@@ -9,6 +9,8 @@ class EscalasController < ApplicationController
 
   # GET /escalas/1 or /escalas/1.json
   def show
+    @user = current_user
+    @jornadas = Jornada.where(escala_id: @escala.id)
     
   end
 
