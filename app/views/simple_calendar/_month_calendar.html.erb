@@ -1,4 +1,3 @@
-<%= params["controller"]%>
 <%if params["controller"] == "escalas" %><%start_date = @escala.mes_ref%><%end%>
 
 <div class="simple-calendar">
@@ -37,8 +36,7 @@
             <%if params["controller"] == "escalas"%>
             <%@jornadas.each do |jornada| %>
                 <%if day == jornada.data%>
-                  <p><%= jornada.turno%></p>
-                  <p><%= @escala.setor%></p>
+                  <div class><p><%= jornada.turno + " - " + @users.find(jornada.user_id).first_name + " " + @users.find(jornada.user_id).last_name%></p></div>
                 <%end%>
               <%end%>
               <%if @escala.id_medico_adm == current_user.id%>
