@@ -1,2 +1,4 @@
 module JornadasHelper
+
+   
 end

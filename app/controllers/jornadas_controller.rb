@@ -1,6 +1,7 @@
 class JornadasController < ApplicationController
   before_action :set_jornada, only: %i[ show edit update destroy ]
   before_action :set_escala, only: [:new, :create]
+  #before_action :horario_livre, only: [:create, :update]
   # GET /jornadas or /jornadas.json
   def index
     @jornadas = Jornada.all
@@ -19,8 +20,11 @@ class JornadasController < ApplicationController
 
   # GET /jornadas/1/edit
   def edit
-    @escala = Escala.find_by(id: @jornada.escala_id)
-    @user = User.find_by(id: @jornada.user_id)
+    @escala = Escala.find(@jornada.escala_id)
+    @user = User.find(@jornada.user_id)
+    if !data_escala
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   # POST /jornadas or /jornadas.json
@@ -28,43 +32,52 @@ class JornadasController < ApplicationController
 
   def create
     @jornada = Jornada.new(jornada_params)
-    @escala = Escala.find_by(id: @jornada.escala_id)
-    
-  
 
-    Rails.logger.debug "Creating Jornada with params: #{jornada_params.inspect}"
-    Rails.logger.debug "Escala: #{@escala.inspect}"
-
-    respond_to do |format|
+    if horario_livre && data_escala
       if @jornada.save
-        format.html { redirect_to "/escalas/#{@escala.id}", notice: "Jornada was successfully created." }
-        format.json { render :show, status: :created, location: @jornada }
+        redirect_to escala_path(@jornada.escala_id), notice: 'Jornada criada com sucesso.'
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @jornada.errors, status: :unprocessable_entity }
+        render :new
       end
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /jornadas/1 or /jornadas/1.json
   def update
-    respond_to do |format|
-      if @jornada.update(jornada_params)
-        format.html { redirect_to jornada_url(@jornada), notice: "Jornada was successfully updated." }
-        format.json { render :show, status: :ok, location: @jornada }
+    @jornada = Jornada.find(params[:id])
+    @escala = Escala.find_by(id: @jornada.escala_id)
+  
+    # Verifique se a escala está definida antes de prosseguir
+    if @escala.nil?
+      @jornada.errors.add(:base, "Escala não encontrada")
+      render :edit, status: :unprocessable_entity
+      return
+    end
+  
+    # Atualize os atributos da jornada com os parâmetros recebidos
+    @jornada.assign_attributes(jornada_params)
+  
+    # Verifique se o horário está livre e a data é válida para a escala
+    if horario_livre_update && data_escala
+      if @jornada.save
+        redirect_to escala_path(@jornada.escala_id), notice: 'Jornada atualizada com sucesso.'
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @jornada.errors, status: :unprocessable_entity }
+        render :edit, status: :unprocessable_entity
       end
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /jornadas/1 or /jornadas/1.json
   def destroy
+    id_escala = @jornada.escala_id
     @jornada.destroy!
 
     respond_to do |format|
-      format.html { redirect_to jornadas_url, notice: "Jornada was successfully destroyed." }
+      format.html { redirect_to escala_path(@jornada.escala_id) , notice: "Jornada was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -75,6 +88,44 @@ class JornadasController < ApplicationController
       @jornada = Jornada.find(params[:id])
     end
 
+    def horario_livre
+      @escala = Escala.find_by(id: @jornada.escala_id)
+      if(@escala.jornadas.where(data: @jornada.data, turno: @jornada.turno).exists?)
+        @jornada.errors.add(:base, "Ja existe uma jornada nesta data e turno")
+        return false
+      end
+      
+      if User.find(@jornada.user_id).jornadas.where(data: @jornada.data, turno: @jornada.turno).exists?
+        @jornada.errors.add(:base, "O usuário #{User.find(@jornada.user_id).first_name} já está de plantão nesta data e turno")
+        return false
+      end
+      true
+    end
+
+    def horario_livre_update
+      # Verificar se há outra jornada para o mesmo usuário na mesma data e turno
+      if User.find(@jornada.user_id).jornadas.where.not(id: @jornada.id).where(data: @jornada.data, turno: @jornada.turno).exists?
+        @jornada.errors.add(:base, "O usuário #{User.find(@jornada.user_id).first_name} já está de plantão nesta data e turno")
+        return false
+      end
+    
+      # Verificar se há outra jornada na escala na mesma data e turno
+      if @escala.jornadas.where.not(id: @jornada.id).where(data: @jornada.data, turno: @jornada.turno).exists?
+        @jornada.errors.add(:base, "Já existe uma jornada nesta data e turno")
+        return false
+      end
+    
+      true
+    end
+
+    def data_escala
+      if @jornada.data.month == @escala.mes_ref.month && @jornada.data.year == @escala.mes_ref.year
+        true
+      else
+        @jornada.errors.add(:base, "Essa data não faz parte dessa escala")
+        false
+      end
+    end
     def set_escala
       id = params[:escala_id]
       @escala = Escala.find_by(id: id)

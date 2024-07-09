@@ -36,19 +36,43 @@
             <%if params["controller"] == "escalas"%>
             <%@jornadas.each do |jornada| %>
                 <%if day == jornada.data%>
-                  <div class><p><%= jornada.turno + " - " + @users.find(jornada.user_id).first_name + " " + @users.find(jornada.user_id).last_name%></p></div>
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= jornada.turno + " - " + @users.find(jornada.user_id).first_name + " " + @users.find(jornada.user_id).last_name%></a>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="<%= url_for(edit_jornada_path(jornada)) %>">Edit this jornada</a>
+                    <div class="dropdown-divider"></div>
+                    <%= button_to "Destroy this jornada", jornada, method: :delete, data: { confirm: "Isso vai deletar definitivamente este Plantão!", turbo_confirm: "Isso vai deletar definitivamente este Plantão!" }, class: "dropdown-item btn btn-outline-danger text-left" %>
+                    
+                    </div>
+                    
+                    </li>
+                  </ul>
+                  
+                  
                 <%end%>
               <%end%>
-              <%if @escala.id_medico_adm == current_user.id%>
-                <%= link_to 'Adicionar Jornada', new_jornada_path(escala_id: @escala.id, data: day) %>
-              <%end%>
+              <div class="d-flex justify-content-center">
+                <% if @escala.id_medico_adm == current_user.id && params["controller"] == "escalas"%>
+                <a href="<%= new_jornada_path(escala_id: @escala.id, data: day) %>" class="button">+</a>
+                 <% end %>
+              </div>
             <%end%>
             <%if params["controller"] == "home"%>
               <%current_user.escalas.each do |escala|%>
                 <%escala.jornadas.each do |jornada|%>
                   <%if day == jornada.data and jornada.user_id == current_user.id%>
-                    <p><%= jornada.turno%></p>
-                    <p><%= @escala.find(jornada.escala_id).setor%></p>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= @escala.find(jornada.escala_id).setor + "/" + jornada.turno %></a>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="<%= url_for(edit_jornada_path(jornada)) %>">Edit this jornada</a>
+                    
+                    </div>
+                    
+                    </li>
+                  </ul>
+                    
                   <%end%>
                 <%end%>
               <%end%>

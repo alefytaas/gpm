@@ -1,34 +1,43 @@
-<%= form_with(model: [ @jornada], local: true) do |form| %>
-  <% if @jornada.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@jornada.errors.count, "erro") %> proibiram esta jornada de ser salva:</h2>
+<% if current_user.user_type != "Medico_adm" %>
+  <%= redirect_to root_path %>
+<% else %>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <%= form_with(model: @jornada, local: true, html: { class: "form" }) do |form| %>
+          <% if @jornada.errors.any? %>
+            <div class="alert alert-danger">
+              <p><%= pluralize(@jornada.errors.count, "erro") %> proibiram esta jornada de ser salva:</p>
+              <ul>
+                <% @jornada.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
 
-      <ul>
-        <% @jornada.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+          <div class="mb-3">
+            <%= form.label :data, class: "form-label" %>
+            <%= form.date_select :data, selected: @jornada.data, class: "form-control" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :turno, class: "form-label" %>
+            <%= form.select :turno, options_for_select(['Manhã', 'Tarde', 'Noite'], @jornada.turno), {}, class: "form-select" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :user_id, class: "form-label" %>
+            <%= form.collection_select :user_id, @escala.users, :id, :first_name, { prompt: true }, class: "form-select" %>
+          </div>
+
+          <%= form.hidden_field :escala_id, value: @escala.id.to_i %>
+
+          <div class="text-center mb-3">
+            <%= form.submit "Save", class: "btn btn-primary" %>
+          </div>
         <% end %>
-      </ul>
+      </div>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :data %>
-    <%= form.date_select :data, selected: @jornada.data %>
-  </div>
-
-  <div class="field">
-    <%= form.label :turno %>
-    <%= form.select :turno, options_for_select(['Manhã', 'Tarde', 'Noite'], @jornada.turno) %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.collection_select :user_id, @escala.users, :id, :first_name, prompt: true %>
-  </div>
-
-  <%= form.hidden_field :escala_id, value: @escala.id.to_i %>
-
-  <div class="actions">
-    <%= form.submit %>
   </div>
 <% end %>
