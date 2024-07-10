@@ -10,8 +10,8 @@
 
     <nav class="mt-2">
       <%= link_to t('simple_calendar.previous', default: '<'), calendar.url_for_previous_view, class: "btn btn-outline-primary mr-2" %>
-      <%= link_to t('simple_calendar.today', default: 'Atual'), calendar.url_for_today_view, class: "btn btn-outline-success" %>
-      <%= link_to t('simple_calendar.next', default: '>'), calendar.url_for_next_view, class: "btn btn-outline-primary" %>
+      <%= link_to t('simple_calendar.today', default: 'Atual'), calendar.url_for_today_view, class: "btn btn-outline-success mr-2" %>
+      <%= link_to t('simple_calendar.next', default: '>'), calendar.url_for_next_view, class: "btn btn-outline-primary mr-2" %>
     </nav>
 
     <%end%>
