@@ -1,0 +1,27 @@
+<div class="container mt-5">
+  <div class="row mt-3">
+    <div class="col-md-8 offset-md-2">
+      <% @users.each do |admin| %>
+        <div class="card mb-3">
+          <div class="card-body">
+            <p class="card-title">
+              <strong>Nome:</strong>
+              <%= admin.first_name + " " + admin.last_name %>
+            </p>
+
+            <div class="card-text">
+              
+              <ul><strong>Escalas:</strong>
+                <% @escalas.where(id_medico_adm: admin.id).each do |escala| %>
+                  <li>
+                    <%= escala.setor %> - <%= escala.users.count.to_s + " Médicos" %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

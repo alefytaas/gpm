@@ -4,6 +4,8 @@ ruby "3.3.3"
 
 gem 'devise'
 
+gem 'resend'
+
 gem "bootstrap"
 
 gem "simple_calendar"

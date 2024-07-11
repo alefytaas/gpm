@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
+  get 'infos/admins'
   resources :jornadas
   resources :escalas
   get 'home/index'
+  get 'admins', to: 'infos#admins'
   devise_for :users do
     get 'logout' => 'devise/sessions#destroy'
   end

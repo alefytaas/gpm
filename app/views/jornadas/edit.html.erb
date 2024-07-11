@@ -1,10 +1,17 @@
-<%= render "home/head" %>
+<% if @jornada.escala.id_medico_adm != current_user.id %>
+  <%= render "home/head" %>
 
-<%= render "form", jornada: @jornada %>
+  <%= render "form", jornada: @jornada %>
 
-<br>
+  <br>
 
-<div>
-  <%= link_to "Show this jornada", @jornada %> |
-  <%= link_to "Back to jornadas", jornadas_path %>
-</div>
+  <div>
+    <%= link_to "Show this jornada", @jornada %> |
+    <%= link_to "Back to jornadas", jornadas_path %>
+  </div>
+<% else %>
+  <%= render "home/head" %>
+  <div class="text-center"> <!-- Adicionando uma classe para centralizar o conteúdo -->
+    <h1>Apenas Médico-Admin da escala pode editar</h1>
+  </div>
+<% end %>

@@ -70,3 +70,14 @@
 
   background-color: #8c8caa;
 }
+
+ul {
+  list-style-type: none; /* Remove bullet points */
+  padding-left: 0; /* Remove padding */
+}
+
+ul li {
+  border: none; /* Remove border */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
+}

@@ -41,11 +41,11 @@ class EscalasController < ApplicationController
   end
   def create
     @escala = Escala.new(escala_params)
-    @jornada.escala_id = params[:escala_id] # Certifique-se de configurar o id da escala corretamente
+    #@jornada.escala_id = params[:escala_id] # Certifique-se de configurar o id da escala corretamente
 
     respond_to do |format|
       if @escala.save
-        format.html { redirect_to escala_url(@escala), notice: "Escala was successfully created." }
+        format.html { redirect_to escala_path(@escala), notice: "Escala was successfully created." }
         format.json { render :show, status: :created, location: @escala }
       else
         format.html { render :new, status: :unprocessable_entity }
