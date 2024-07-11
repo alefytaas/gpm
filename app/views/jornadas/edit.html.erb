@@ -1,4 +1,4 @@
-<% if @jornada.escala.id_medico_adm != current_user.id %>
+<% if @jornada.escala.id_medico_adm == current_user.id %>
   <%= render "home/head" %>
 
   <%= render "form", jornada: @jornada %>
