@@ -10,6 +10,8 @@ gem "bootstrap"
 
 gem "simple_calendar"
 
+gem 'carrierwave', '~> 3.0'
+
 gem "sassc-rails"
 
 gem 'rails-i18n'

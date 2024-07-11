@@ -8,19 +8,7 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.enable_reloading = true
 
-config.action_mailer.perform_deliveries = true
-config.action_mailer.raise_delivery_errors = true
-config.action_mailer.default_url_options = { host: 'localhost:3000' }
-config.action_mailer.delivery_method = :smtp
-config.action_mailer.smtp_settings = {
-  address: 'smtp.mailgun.org',
-  port: 587,
-  domain: 'sandbox67fbaddcaf8446798407d6edfef15325.mailgun.org',
-  user_name: 'postmaster@sandbox67fbaddcaf8446798407d6edfef15325.mailgun.org',
-  password: 'ab4b6c85989df81aba407c0cbd1901cd-8a084751-ad56e725',
-  authentication: 'plain',
-  enable_starttls_auto: true
-}
+
 
   # Do not eager load code on boot.
   config.eager_load = false

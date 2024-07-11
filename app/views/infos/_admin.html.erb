@@ -4,19 +4,25 @@
       <% @users.each do |admin| %>
         <div class="card mb-3">
           <div class="card-body">
-            <p class="card-title">
-              <strong>Nome:</strong>
-              <%= admin.first_name + " " + admin.last_name %>
-            </p>
+            <div class="d-flex align-items-center mb-3">
+              <%if admin.image_url != nil%>
+              <%= image_tag admin.image_url.to_s, class: "avatar-img rounded-circle me-3", alt: "Avatar", style: "width: 20%; height: 20%;" %>
+              <%else%>
+              <%= image_tag "Boneco.png", class: "avatar-img rounded-circle me-3", alt: "Avatar", style: "width: 20%; height: 20%;" %>
+              <%end%>
+              <h5 class="card-title mb-0"><%= admin.first_name + " " + admin.last_name %></h5>
+            </div>
 
             <div class="card-text">
-              
-              <ul><strong>Escalas:</strong>
-                <% @escalas.where(id_medico_adm: admin.id).each do |escala| %>
-                  <li>
-                    <%= escala.setor %> - <%= escala.users.count.to_s + " Médicos" %>
-                  </li>
-                <% end %>
+              <ul class="list-unstyled">
+                <li>
+                  <strong>Escalas:</strong>
+                  <ul class="list-unstyled mt-2">
+                    <% @escalas.where(id_medico_adm: admin.id).each do |escala| %>
+                      <li><%= escala.setor %> - <%= escala.users.count.to_s + " Médicos" %></li>
+                    <% end %>
+                  </ul>
+                </li>
               </ul>
             </div>
           </div>
