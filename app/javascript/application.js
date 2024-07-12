@@ -5,3 +5,5 @@ import "popper";
 
 import "bootstrap";
 require("@rails/ujs").start();
+
+// Configurações para suportar requisições PATCH

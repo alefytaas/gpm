@@ -1,0 +1,29 @@
+<%= render "home/head" %>
+
+<div class="container">
+  <% if Jornada.find(params[:jornada_id]).user_id == current_user.id %>
+    <%= form_with(model: [ @jornada, @shift_swap ], local: true) do |form| %>
+      <% if @shift_swap.errors.any? %>
+        <div id="error_explanation" class="alert alert-danger">
+          <h2><%= pluralize(@shift_swap.errors.count, "erro") %> proíbe esta solicitação de troca de plantão de ser salva:</h2>
+          <ul>
+            <% @shift_swap.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-3">
+        <%= form.label :receiving_doctor_id, class: "form-label" %>
+        <%= form.collection_select :receiving_doctor_id, @jornadas_troca, :user_id, -> (jornada) { "#{jornada.escala.setor} - #{jornada.turno} - #{jornada.data}" }, { prompt: 'Selecione um médico' }, { class: "form-select" } %>
+      </div>
+
+      <div class="actions">
+        <%= form.submit 'Solicitar Troca', class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="alert alert-warning">Esse plantão não pertence a você.</p>
+  <% end %>
+</div>

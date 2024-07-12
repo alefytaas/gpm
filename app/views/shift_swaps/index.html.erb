@@ -1,0 +1,31 @@
+<!-- app/views/shift_swaps/index.html.erb -->
+
+<h1>Solicitações de Troca de Plantão</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Médico Solicitante</th>
+      <th>Médico Receptor</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @shift_swaps.each do |shift_swap| %>
+      <tr>
+        <td><%= shift_swap.requesting_doctor.first_name %> <%= shift_swap.requesting_doctor.last_name %></td>
+        <td><%= shift_swap.receiving_doctor.first_name %> <%= shift_swap.receiving_doctor.last_name %></td>
+        <td><%= shift_swap.status %></td>
+        <td>
+          <% if shift_swap.status == 'pending' %>
+            <%= button_to "Rejeitar", reject_shift_swap_path(shift_swap), method: :patch %>
+            <%= button_to "Aprovar", approve_shift_swap_path(shift_swap), method: :patch %>
+          <% else %>
+            <%= link_to 'Ver Detalhes', shift_swap_path(shift_swap) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

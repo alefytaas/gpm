@@ -1,0 +1,24 @@
+<p>
+  <strong>Requesting Doctor:</strong>
+  <%= @shift_swap.requesting_doctor.first_name %>
+</p>
+
+<p>
+  <strong>Receiving Doctor:</strong>
+  <%= @shift_swap.receiving_doctor.first_name %>
+</p>
+
+<p>
+  <strong>Jornada:</strong>
+  <%= @shift_swap.jornada.turno %> - <%= @shift_swap.jornada.data %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @shift_swap.status %>
+</p>
+
+<% if @shift_swap.status == 'pending' && @shift_swap.receiving_doctor == current_user %>
+    <%= link_to 'Aprovar', approve_shift_swap_path(@shift_swap), { method: :patch  } %>
+    <%= link_to 'Rejeitar', reject_shift_swap_path(@shift_swap), { method: :patch   } %>
+<% end %>

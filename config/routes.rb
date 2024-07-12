@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
   get 'infos/admins'
-  resources :jornadas
+  resources :jornadas do
+    resources :shift_swaps, only: [:new, :create, :index]
+  end
+
+  resources :shift_swaps do
+    member do
+      patch 'approve'
+      patch 'reject'
+    end
+  end
   resources :escalas
   get 'home/index'
   get 'admins', to: 'infos#admins'

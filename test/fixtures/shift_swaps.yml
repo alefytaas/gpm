@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  requesting_doctor: one
+  receiving_doctor: one
+  jornada: one
+  status: MyString
+
+two:
+  requesting_doctor: two
+  receiving_doctor: two
+  jornada: two
+  status: MyString
