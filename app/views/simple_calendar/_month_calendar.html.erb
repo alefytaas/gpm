@@ -72,10 +72,11 @@
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= @escala.find(jornada.escala_id).setor + "/" + jornada.turno %></a>
                     <div class="dropdown-menu">
-                    
-
+                      <% if day >= Date.today%>
                     <a class="dropdown-item" href="<%= url_for(jornada_path(jornada) + "/shift_swaps/new") %>">Solicitar troca de platão</a>
-                    
+                    <%end%>
+                      <a class="dropdown-item" href="<%= url_for(jornada_path(jornada))  %>">Destalhes de Plantão</a>
+
                     </div>
                     
                     </li>

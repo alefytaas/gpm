@@ -14,7 +14,7 @@ class ShiftSwapsController < ApplicationController
     @shift_swap.requesting_doctor = current_user
     @shift_swap.status = 'pending'
     
-    if(ShiftSwap.exists?(shift_swap_params))
+    if(ShiftSwap.where(shift_swap_params).any?)
       @shift_swap = ShiftSwap.where(shift_swap_params)
       redirect_to shift_swap_path(@shift_swap), notice: 'Solicitação já existente.'
       else
@@ -28,7 +28,7 @@ class ShiftSwapsController < ApplicationController
   end
 
   def index
-    @shift_swaps = ShiftSwap.where(receiving_doctor: current_user)
+    @shift_swaps = ShiftSwap.where(receiving_doctor: current_user).where(status: 'pending')
   end
 
   def show

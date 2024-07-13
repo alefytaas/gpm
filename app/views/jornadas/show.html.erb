@@ -1,10 +1,17 @@
-<p style="color: green"><%= notice %></p>
+<%= render "home/head" %>
+
+<p class="text-success"><%= notice %></p>
 
 <%= render @jornada %>
 
-<div>
-  <%= link_to "Edit this jornada", edit_jornada_path(@jornada) %> |
-   <%= link_to "Mostrar a escala", @escala, class: "btn btn-primary" %>
+<div class="d-flex justify-content-center mt-3">
+  <div class="btn-group" role="group">
+    <%if Escala.find(@jornada.escala_id).id_medico_adm == current_user.id%>
+    <%= link_to "Edit this jornada", edit_jornada_path(@jornada), class: "btn btn-warning mr-2" %>
+   
+    <%= button_to "Destroy this jornada", @jornada, method: :delete, class: "btn btn-danger" %>
+    <%end%>
+     <%= link_to "Mostrar a escala", @escala, class: "btn btn-primary mr-2" %>
 
-  <%= button_to "Destroy this jornada", @jornada, method: :delete %>
+  </div>
 </div>

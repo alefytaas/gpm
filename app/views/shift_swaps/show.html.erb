@@ -26,8 +26,8 @@
   </div>
   <% if @shift_swap.status == 'pending' && @shift_swap.receiving_doctor == current_user %>
     <div class="card-footer">
-      <%= button_to "Rejeitar", reject_shift_swap_path(shift_swap), method: :patch, class: "btn btn-danger btn-sm" %>
-      <%= button_to "Aprovar", approve_shift_swap_path(shift_swap), method: :patch, class: "btn btn-success btn-sm" %>
+      <%= button_to "Rejeitar", reject_shift_swap_path(@shift_swap), method: :patch, class: "btn btn-danger btn-sm" %>
+      <%= button_to "Aprovar", approve_shift_swap_path(@shift_swap), method: :patch, class: "btn btn-success btn-sm" %>
     </div>
   <% end %>
 </div>
