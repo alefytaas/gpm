@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_12_123434) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_13_132052) do
   create_table "escala_users", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "escala_id", null: false
@@ -50,7 +50,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_123434) do
     t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "jornada_id_destination"
     t.index ["jornada_id"], name: "index_shift_swaps_on_jornada_id"
+    t.index ["jornada_id_destination"], name: "index_shift_swaps_on_jornada_id_destination"
     t.index ["receiving_doctor_id"], name: "index_shift_swaps_on_receiving_doctor_id"
     t.index ["requesting_doctor_id"], name: "index_shift_swaps_on_requesting_doctor_id"
   end

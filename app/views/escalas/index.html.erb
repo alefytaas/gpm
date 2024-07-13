@@ -19,7 +19,7 @@
               <%= render escala %>
               <p>
                 <%= link_to "Mostrar a escala", escala, class: "btn btn-primary" %>
-                <% if current_user.user_type == "Medico_adm" %>
+                <% if escala.id_medico_adm == current_user.id %>
                 <%= link_to "Editar a escala", edit_escala_path(escala), class: "btn btn-primary" %> 
                 <%= button_to "Deletar Escala", escala, method: :delete , data: { confirm: "Isso vai deletar definitivamente esta escala!", turbo_confirm: "Isso vai deletar definitivamente esta escala!" }, class: "btn btn-danger" %>
                 <% end %>

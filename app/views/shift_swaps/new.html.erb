@@ -22,14 +22,14 @@
           <% end %>
 
           <div class="mb-3">
-            
             <% if @jornadas_troca.present? %>
-              <%= form.label "Selecione o plantão que gostaria: ", class: "form-label" %>
-              <%= form.select :receiving_doctor_id, grouped_options_for_select(@jornadas_troca.map { |data, jornadas| [data, jornadas.map { |jornada| ["#{jornada.user.first_name} - #{jornada.escala.setor} - #{jornada.turno}", jornada.user_id] }] }), { prompt: 'Selecione um médico' }, { class: "form-select" } %>
+              <%= form.label "Selecione o médico e plantão que gostaria:", class: "form-label" %>
+              <%= form.select :jornada_id_destination, grouped_options_for_select(@jornadas_troca.map { |data, jornadas| [data, jornadas.map { |jornada| ["#{jornada.user.first_name} - #{jornada.escala.setor} - #{jornada.turno}", "#{jornada.id}"] }] }), { prompt: 'Selecione um médico e plantão' }, { id: 'receiving_doctor_select', class: 'form-select' } %>
             <% else %>
               <p class="text-muted">Nenhum plantão disponível para solicitação de troca.</p>
             <% end %>
           </div>
+         
 
           <div class="d-grid gap-2">
             <%= form.submit 'Solicitar Troca', class: "btn btn-primary" %>
@@ -41,3 +41,5 @@
     <div class="alert alert-warning mt-4">Esse plantão não pertence a você.</div>
   <% end %>
 </div>
+
+

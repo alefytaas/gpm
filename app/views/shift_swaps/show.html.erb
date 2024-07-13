@@ -15,8 +15,12 @@
     </p>
 
     <p>
-      <strong>Plantão:</strong>
+      <strong>Plantão Ofertado:</strong>
       <%= @shift_swap.jornada.turno %> - <%= @shift_swap.jornada.data %>
+    </p>
+     <p>
+      <strong>Plantão Desejado:</strong>
+      <%= Jornada.find(@shift_swap.jornada_id_destination).turno %> - <%= Jornada.find(@shift_swap.jornada_id_destination).data %>
     </p>
 
     <p>
