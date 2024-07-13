@@ -28,6 +28,7 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <%= link_to 'Escalas', escalas_path, class: 'dropdown-item' %>
               <%= link_to 'Coordenação Escalas', admins_path, class: 'dropdown-item' %>
+              <%= link_to 'Solicitações de troca', shift_swaps_path, class: 'dropdown-item' %>
               <li><hr class="dropdown-divider"></li>
               <li><%= link_to 'Sobre o Sistema', '#', class: 'dropdown-item' %></li>
               <li><%= link_to 'Fale Conosco', '#', class: 'dropdown-item' %></li>
@@ -66,14 +67,6 @@
     </div>
   </nav>
 
-  <div class="container-fluid p-0">
-    <% if notice %>
-      <p class="alert alert-info"><%= notice %></p>
-    <% end %>
-    <% if alert %>
-      <p class="alert alert-danger"><%= alert %></p>
-    <% end %>
-    <%= yield %>
-  </div>
+
 </body>
 </html>

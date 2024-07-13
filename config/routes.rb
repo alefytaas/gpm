@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'infos/admins'
   resources :jornadas do
-    resources :shift_swaps, only: [:new, :create, :index]
+    resources :shift_swaps, only: [:new, :create]
   end
 
   resources :shift_swaps do

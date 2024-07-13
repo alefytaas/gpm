@@ -42,11 +42,15 @@
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= jornada.turno + " - " + @users.find(jornada.user_id).first_name %></a>
                     <div class="dropdown-menu">
-                    <a class="dropdown-item" href="<%= url_for(edit_jornada_path(jornada)) %>">Edit this jornada</a>
+                    <a class="dropdown-item" href="<%= url_for(jornada_path(jornada)) %>">Destalhes do Plantão</a>
+                      <%if @escala.id_medico_adm == current_user.id%>
+                    <a class="dropdown-item" href="<%= url_for(edit_jornada_path(jornada)) %>">Editar Plantão</a>
+                    
                     <div class="dropdown-divider"></div>
                     <%= button_to "Destroy this jornada", jornada, method: :delete, data: { confirm: "Isso vai deletar definitivamente este Plantão!", turbo_confirm: "Isso vai deletar definitivamente este Plantão!" }, class: "dropdown-item btn btn-outline-danger text-left" %>
                     
                     </div>
+                    <%end%>
                     
                     </li>
                   </ul>

@@ -1,4 +1,5 @@
 class JornadasController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_jornada, only: %i[ show edit update destroy ]
   before_action :set_escala, only: [:new, :create]
   #before_action :horario_livre, only: [:create, :update]
@@ -32,7 +33,7 @@ class JornadasController < ApplicationController
 
   def create
     @jornada = Jornada.new(jornada_params)
-
+    if(Escala.find_by(id: @jornada.escala_id).id_medico_adm == current_user.id)
     if horario_livre && data_escala
       if @jornada.save
         redirect_to escala_path(@jornada.escala_id), notice: 'Jornada criada com sucesso.'
@@ -41,6 +42,9 @@ class JornadasController < ApplicationController
       end
     else
       render :new, status: :unprocessable_entity
+    end
+    else
+       redirect_to escala_path(@jornada.escala_id) , alert: "Você não é administrador da escala"
     end
   end
 
@@ -73,12 +77,16 @@ class JornadasController < ApplicationController
 
   # DELETE /jornadas/1 or /jornadas/1.json
   def destroy
-    id_escala = @jornada.escala_id
+    if(Escala.find_by(id: @jornada.escala_id).id_medico_adm != current_user.id)
+      redirect_to escala_path(@jornada.escala_id) , alert: "Você não é administrador da escala"
+    else
     @jornada.destroy!
+
 
     respond_to do |format|
       format.html { redirect_to escala_path(@jornada.escala_id) , notice: "Jornada was successfully destroyed." }
       format.json { head :no_content }
+    end
     end
   end
 

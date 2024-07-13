@@ -1,28 +1,34 @@
 # app/controllers/shift_swaps_controller.rb
 class ShiftSwapsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_jornada, only: [:new, :create, :index]
+  before_action :set_jornada, only: [:new, :create]
   before_action :set_shift_swap, only: [:approve, :reject, :show]
 
   def new
     @shift_swap = ShiftSwap.new
-    @jornadas_troca = Jornada.where.not(id: params[:jornada_id]).where.not(user_id: current_user)
+    @jornadas_troca = Jornada.where.not(id: params[:jornada_id]).where.not(user_id: current_user).group_by(&:data)
   end
 
   def create
     @shift_swap = @jornada.shift_swaps.build(shift_swap_params)
     @shift_swap.requesting_doctor = current_user
     @shift_swap.status = 'pending'
-
+    
+    if(ShiftSwap.exists?(shift_swap_params))
+      @shift_swap = ShiftSwap.where(shift_swap_params)
+      redirect_to shift_swap_path(@shift_swap), notice: 'Solicitação já existente.'
+      else
     if @shift_swap.save
-      redirect_to @jornada, notice: 'Solicitação de troca de plantão criada com sucesso.'
+      redirect_to shift_swap_path(@shift_swap), notice: 'Solicitação de troca de plantão criada com sucesso.'
     else
       render :new
     end
+    end
+
   end
 
   def index
-    @shift_swaps = @jornada.shift_swaps
+    @shift_swaps = ShiftSwap.where(receiving_doctor: current_user)
   end
 
   def show
