@@ -17,6 +17,9 @@ class HomeController < ApplicationController
   def about
   end
 
+  def atendimento
+  end
+
   
 
   # def week
