@@ -1,5 +1,5 @@
 <%= render "home/head" %>
-<% if escala.id_medico_adm != current_user.id %> 
+<% if @escala.id_medico_adm != current_user.id %> 
   <div class="d-flex justify-content-center align-items-center">
     <h1 class="text-center">Você não tem privilégios para editar esta escala</h1>
     

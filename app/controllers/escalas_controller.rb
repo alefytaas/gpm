@@ -17,12 +17,12 @@ class EscalasController < ApplicationController
   # GET /escalas/new
   def new
     @escala = Escala.new
-    @Medicos = User.where(user_type: ['Medico', 'Medico_adm'])
+    @medicos = User.where(user_type: ['Medico', 'Medico_adm'])
   end
 
   # GET /escalas/1/edit
   def edit
-    @Medicos = User.where(user_type: ['Medico', 'Medico_adm'])
+    @medicos = User.where(user_type: ['Medico', 'Medico_adm'])
   end
 
   # POST /escalas or /escalas.json
@@ -41,11 +41,12 @@ class EscalasController < ApplicationController
   end
   def create
     @escala = Escala.new(escala_params)
+    @medicos = User.where(user_type: ['Medico', 'Medico_adm'])
     #@jornada.escala_id = params[:escala_id] # Certifique-se de configurar o id da escala corretamente
 
     respond_to do |format|
       if @escala.save
-        format.html { redirect_to escala_path(@escala), notice: "Escala was successfully created." }
+        format.html { redirect_to escala_path(@escala), notice: "Escala criada com sucesso!" }
         format.json { render :show, status: :created, location: @escala }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -58,7 +59,7 @@ class EscalasController < ApplicationController
   def update
     respond_to do |format|
       if @escala.update(escala_params)
-        format.html { redirect_to escala_url(@escala), notice: "Escala was successfully updated." }
+        format.html { redirect_to escala_url(@escala), notice: "Escala atualizada com sucesso!" }
         format.json { render :show, status: :ok, location: @escala }
       else
         format.html { render :edit, status: :unprocessable_entity }

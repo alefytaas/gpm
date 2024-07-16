@@ -6,6 +6,8 @@ gem 'devise'
 
 gem 'resend'
 
+gem 'dotenv-rails', groups: [:development, :test]
+
 gem "bootstrap"
 
 gem "simple_calendar"

@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
+  resources :contacts, only: [:new, :create]
   get 'infos/admins'
   resources :jornadas do
     resources :shift_swaps, only: [:new, :create]
   end
   get 'about', to: 'home#about'
-  get 'atendimento', to: 'home#atendimento'
   resources :shift_swaps do
     member do
       patch 'approve'

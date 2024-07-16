@@ -1,13 +1,12 @@
-
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <%= form_with(model: escala, local: true, html: { class: "form" }) do |form| %>
-      <%= form.hidden_field :id_medico_adm, value: current_user.id %>
+        <%= form.hidden_field :id_medico_adm, value: current_user.id %>
+        
         <% if escala.errors.any? %>
           <div class="alert alert-danger">
             <h2><%= pluralize(escala.errors.count, "error") %> prohibited this escala from being saved:</h2>
-
             <ul>
               <% escala.errors.full_messages.each do |error_message| %>
                 <li><%= error_message %></li>
@@ -28,28 +27,33 @@
             start_year: Date.current.year,
             end_year: Date.current.year + 10,
             default: { day: 1 }
-            }, class: "form-control" %>
+          }, class: "form-control" %>
         </div>
 
        <div class="mb-3">
   <%= form.label :users, "Médicos:", class: "form-label" %>
   <div>
-    <% @Medicos.each do |medico| %>
+    <% checked_ids = escala.users.pluck(:id) %>
+    <% @medicos.each do |medico| %>
       <div class="form-check">
-        <% always_selected = medico.id == current_user.id %> <!-- Exemplo baseado em um atributo `role` -->
-        <% checked = always_selected %>
-        <%= check_box_tag "escala[user_ids][]", medico.id, checked, class: "form-check-input", id: "user_#{medico.id}" %>
-        <%= label_tag "user_#{medico.id}", medico.first_name + " " + medico.last_name, class: "form-check-label" %>
+        <% is_checked = checked_ids.include?(medico.id) || medico.id == current_user.id %>
+        
+        <% if medico.id != escala.id_medico_adm %>
+          <%= check_box_tag "escala[user_ids][]", medico.id, is_checked, class: "form-check-input", id: "user_#{medico.id}" %>
+          <%= label_tag "user_#{medico.id}", "#{medico.first_name} #{medico.last_name}", class: "form-check-label" %>
+        <% else %>
+          <!-- Campo hidden para garantir o envio do valor -->
+          <%= hidden_field_tag "escala[user_ids][]", medico.id %>
+          <!-- Checkbox visível, mas desabilitado -->
+          <%= check_box_tag nil, medico.id, true, class: "form-check-input", disabled: true, id: "user_#{medico.id}" %>
+          <%= label_tag "user_#{medico.id}", "#{medico.first_name} #{medico.last_name}", class: "form-check-label" %>
+        <% end %>
       </div>
     <% end %>
-    
   </div>
 </div>
 
-
-        
-
-        <div class="text-center mb-3"> <!-- Adicionando margem embaixo do botão -->
+        <div class="text-center mb-3">
           <%= form.submit "Save", class: "btn btn-primary" %>
         </div>
       <% end %>

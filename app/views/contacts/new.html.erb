@@ -1,0 +1,22 @@
+<%= render "home/head" %>
+
+<%= form_with url: contacts_path, method: :post, class: "container mt-5" do |form| %>
+  <div class="mb-3">
+    <%= form.label :email, class: "form-label" %>
+    <%= form.email_field :email, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :subject, class: "form-label" %>
+    <%= form.text_field :subject, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :message, class: "form-label" %>
+    <%= form.text_area :message, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.submit 'Enviar', class: "btn btn-primary" %>
+  </div>
+<% end %>
