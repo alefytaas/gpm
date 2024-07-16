@@ -1,0 +1,65 @@
+<!-- app/views/shift_swaps/index.html.erb -->
+<%= render "home/head" %>
+<div class="container">
+  <h1 class="my-4">Solicitações de Troca de Plantão</h1>
+
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Médico Solicitante</th>
+        <th>Oferece</th>
+        <th>Por</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @shift_swaps.each do |shift_swap| %>
+        <% if shift_swap.status == 'pending' %>
+        <tr>
+          <td><%= shift_swap.requesting_doctor.first_name %> <%= shift_swap.requesting_doctor.last_name %></td>
+          <td><%= shift_swap.jornada.turno %> - <%= shift_swap.jornada.data %> - <%= shift_swap.jornada.escala.setor %></td>
+          <td><%= Jornada.find(shift_swap.jornada_id_destination).turno %> - <%=  Jornada.find(shift_swap.jornada_id_destination).data %> - <%=  Jornada.find(shift_swap.jornada_id_destination).escala.setor %></td>
+
+          <td>
+            <div class="btn-group" role="group">
+              
+                <%= button_to "Rejeitar", reject_shift_swap_path(shift_swap), method: :patch, class: "btn btn-danger btn-sm mr-2" %>
+                <%= button_to "Aprovar", approve_shift_swap_path(shift_swap), method: :patch, class: "btn btn-success btn-sm mr-2" %>
+                
+              
+              <%= link_to 'Ver Detalhes', shift_swap_path(shift_swap), class: "btn btn-primary btn-sm mr-2" %>
+            </div>
+          </td>
+        </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <h1 class="my-4">Histórico de Solicitações.</h1>
+
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Médico Solicitante</th>
+        <th>Oferece</th>
+        <th>Por</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @shift_swaps.each do |shift_swap| %>
+        <% if shift_swap.status != 'pending'%>
+        <tr>
+          <td><%= shift_swap.requesting_doctor.first_name %> <%= shift_swap.requesting_doctor.last_name %></td>
+          <td><%= Jornada.find(shift_swap.jornada_id_destination).turno %> - <%=  Jornada.find(shift_swap.jornada_id_destination).data %> - <%=  Jornada.find(shift_swap.jornada_id_destination).escala.setor %></td>
+          <td><%= shift_swap.jornada.turno %> - <%= shift_swap.jornada.data %> - <%= shift_swap.jornada.escala.setor %></td>
+          <td><%= shift_swap.status %></td>
+        </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
