@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   mount_uploader :image, ImageUploader
+  has_one_attached :image
   has_many :escala_users , dependent: :destroy
   has_many :escalas, through: :escala_users
   has_many :jornadas, dependent: :destroy

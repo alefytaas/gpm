@@ -23,14 +23,14 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Menu
+              Menu 
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <%= link_to 'Escalas', escalas_path, class: 'dropdown-item' %>
               <%= link_to 'Coordenação Escalas', admins_path, class: 'dropdown-item' %>
               <%= link_to 'Solicitações de troca', shift_swaps_path, class: 'dropdown-item' %>
               <li><hr class="dropdown-divider"></li>
-              <li><%= link_to 'Sobre o Sistema', '#', class: 'dropdown-item' %></li>
+              <li><%= link_to 'Sobre o Sistema', about_path, class: 'dropdown-item' %></li>
               <li><%= link_to 'Fale Conosco', '#', class: 'dropdown-item' %></li>
             </ul>
           </li>
@@ -51,7 +51,7 @@
                 <%= link_to 'Ver Escalas', escalas_path, class: 'dropdown-item' %>
                 <%= link_to 'Coordenação Escalas', '#', class: 'dropdown-item' %>
                 <%= link_to 'Sobre o Sistema', '#', class: 'dropdown-item' %>
-                <%= link_to 'Editar Perfil', edit_user_registration_path, class: 'dropdown-item' %>
+                <%= link_to 'Editar Perfil', edit_user_registration_path(1), class: 'dropdown-item' %>
                 <li><hr class="dropdown-divider"></li>
                 <li>
                   <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "dropdown-item btn btn-outline-danger text-center" %>
@@ -67,6 +67,13 @@
     </div>
   </nav>
 
-
+<% if ShiftSwap.where(receiving_doctor_id: current_user.id).where(status: "pending").any? %>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Você tem pedidos de troca de turno pendentes.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+<% end %>
 </body>
+
+ 
 </html>

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :jornadas do
     resources :shift_swaps, only: [:new, :create]
   end
-
+  get 'about', to: 'home#about'
   resources :shift_swaps do
     member do
       patch 'approve'

@@ -6,10 +6,15 @@ class HomeController < ApplicationController
     @user = current_user
     @jornadas = Jornada.where(user_id: current_user)
     @escala = Escala.where(id: @jornadas.pluck(:escala_id))
+
+
   end
   def month
     @date = Date.parse(params.fetch(:date, Date.today.to_s))
     # @events = Event.where(start_date: @date.all_month)
+  end
+
+  def about
   end
 
   

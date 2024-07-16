@@ -1,3 +1,18 @@
+  <div >
+    
+    <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="text-center mb-4 mt-5">
+        <%= link_to root_path do %> <!-- Div para centralizar e adicionar margem inferior -->
+        <%= image_tag "CronoMEDLOGO.png", alt: "Logo do MedicoManage", style: "width: 400px; height: auto;" %>
+        <% end %>
+      </div>
+      <h1 class="text-center">Crie sua conta</h1>
+
+  </div>
+
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const imageInput = document.getElementById('image_input');
@@ -25,7 +40,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <h2 class="text-center">Sign up</h2>
+      
 
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "form" }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
@@ -34,7 +49,7 @@
           <%= image_tag '', id: 'image_preview', class: 'img-circle', style: 'max-width: 100px; display: none;' %>
         </div>
         <div class="form-group">
-          <%= f.label :image %>
+          <%= f.label :foto %>
           <%= f.file_field :image, id: 'image_input', class: 'form-control' %>
         </div>
 
@@ -46,40 +61,40 @@
         </div>
 
         <div class="form-group">
-          <%= f.label :password %>
+          <%= f.label :senha %>
           <% if @minimum_password_length %>
-            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <em>(  Minimo de <%= @minimum_password_length %> caracteres)</em>
           <% end %>
           <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
         </div>
 
         <div class="form-group">
-          <%= f.label :password_confirmation %>
+          <%= f.label :confirme_senha %>
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
         </div>
 
         <div class="form-group">
-          <%= f.label :first_name %>
+          <%= f.label :Nome %>
           <%= f.text_field :first_name, autocomplete: "first-name", class: "form-control" %>
         </div>
 
         <div class="form-group">
-          <%= f.label :last_name %>
+          <%= f.label :Sobrenome %>
           <%= f.text_field :last_name, autocomplete: "last-name", class: "form-control" %>
         </div>
         
         <div class="form-group">
-          <%= f.label :dt_nasc %>
-          <%= f.date_select :dt_nasc, class: "form-control" %>
+          <%= f.label :data_nascimento %>
+          <%= f.date_select :dt_nasc, start_year: Date.today.year - 100, end_year: Date.today.year - 18, default: { year:2000 , month: 1, day: 1 } , class: "form-control" %>
         </div>
 
         <div class="form-group">
-          <%= f.label :user_type %>
-          <%= f.select :user_type, ["Medico", "Hospital", "Medico_adm"], { prompt: "Select user type" }, class: "form-control" %>
+          <%= f.label :tipo_usuário %>
+          <%= f.select :user_type, ["Medico", "Hospital"], { prompt: "Selecione o tipo de perfil" }, class: "form-control" %>
         </div>
 
         <div class="form-group text-center">
-          <%= f.submit "Sign up", class: "btn btn-primary btn-block" %>
+          <%= f.submit "Registrar-se", class: "btn btn-primary btn-block" %>
         </div>
       <% end %>
 

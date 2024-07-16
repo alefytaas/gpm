@@ -309,6 +309,7 @@ DEPENDENCIES
   carrierwave (~> 3.0)
   debug
   devise
+  httparty
   importmap-rails
   jbuilder
   puma (>= 5.0)

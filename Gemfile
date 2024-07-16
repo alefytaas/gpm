@@ -16,6 +16,8 @@ gem "sassc-rails"
 
 gem 'rails-i18n'
 
+gem 'httparty'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3", ">= 7.1.3.4"
 
