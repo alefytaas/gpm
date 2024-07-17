@@ -11,9 +11,12 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_07_13_132052) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "escala_users", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "escala_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "escala_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["escala_id"], name: "index_escala_users_on_escala_id"
@@ -26,17 +29,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_13_132052) do
     t.date "mes_ref"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "id_medicos"
-    t.integer "medicos"
-    t.string "array"
-    t.string "true"
   end
 
   create_table "jornadas", force: :cascade do |t|
     t.date "data"
     t.string "turno"
-    t.integer "user_id", null: false
-    t.integer "escala_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "escala_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["escala_id"], name: "index_jornadas_on_escala_id"
@@ -44,9 +43,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_13_132052) do
   end
 
   create_table "shift_swaps", force: :cascade do |t|
-    t.integer "requesting_doctor_id", null: false
-    t.integer "receiving_doctor_id", null: false
-    t.integer "jornada_id", null: false
+    t.bigint "requesting_doctor_id", null: false
+    t.bigint "receiving_doctor_id", null: false
+    t.bigint "jornada_id", null: false
     t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -69,10 +68,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_13_132052) do
     t.string "last_name"
     t.date "dt_nasc"
     t.string "user_type"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
     t.string "image"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
