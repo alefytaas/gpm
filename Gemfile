@@ -30,6 +30,10 @@ gem "sprockets-rails"
 #gem "sqlite3", "~> 1.4"
 gem 'pg'
 
+#geração de relatórios PDF
+gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf'
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 

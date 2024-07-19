@@ -15,43 +15,53 @@
           </div>
         <% end %>
 
-        <div class="mb-3">
-          <%= form.label :setor, class: "form-label" %>
-          <%= form.text_field :setor, class: "form-control" %>
+        <div class="field mb-3 mt-3">
+          <%= form.label :hospital_id %>
+          <%= form.select :hospital_id, options_for_select(@hospitais.map { |h| [h.nome_hospital, h.id] }, escala.hospital_id), {}, class: 'form-control', required: true %>
         </div>
 
-        <div class="mb-3">
-          <%= form.label :mes_ref, class: "form-label" %>
+        <div class="field mb-3 mt-3">
+          <%= form.label :setor %>
+          <%= form.select :setor, options_for_select(escala.hospital&.setores || [], escala.setor), {}, class: 'form-control', id: 'setor-select' %>
+        </div>
+
+        <div class="mb-3 mt-3">
+          <%= form.label :val_jornada, "Valor plantão 6h" ,class: "form-label" %>
+          <%= form.text_field :val_jornada, class: "form-control", value: escala.val_jornada %>
+        </div>
+
+        <div class="mb-3 mt-3">
+          <%= form.label :mes_ref, "Mês", class: "form-label" %>
           <%= form.date_select :mes_ref, {
             order: [:month, :year],
             start_year: Date.current.year,
             end_year: Date.current.year + 10,
-            default: { day: 1 }
+            default: escala.mes_ref || { day: 1 }
           }, class: "form-control" %>
         </div>
 
-       <div class="mb-3">
-  <%= form.label :users, "Médicos:", class: "form-label" %>
-  <div>
-    <% checked_ids = escala.users.pluck(:id) %>
-    <% @medicos.each do |medico| %>
-      <div class="form-check">
-        <% is_checked = checked_ids.include?(medico.id) || medico.id == current_user.id %>
-        
-        <% if medico.id != escala.id_medico_adm %>
-          <%= check_box_tag "escala[user_ids][]", medico.id, is_checked, class: "form-check-input", id: "user_#{medico.id}" %>
-          <%= label_tag "user_#{medico.id}", "#{medico.first_name} #{medico.last_name}", class: "form-check-label" %>
-        <% else %>
-          <!-- Campo hidden para garantir o envio do valor -->
-          <%= hidden_field_tag "escala[user_ids][]", medico.id %>
-          <!-- Checkbox visível, mas desabilitado -->
-          <%= check_box_tag nil, medico.id, true, class: "form-check-input", disabled: true, id: "user_#{medico.id}" %>
-          <%= label_tag "user_#{medico.id}", "#{medico.first_name} #{medico.last_name}", class: "form-check-label" %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-</div>
+        <div class="mb-3">
+          <%= form.label :users, "Médicos:", class: "form-label" %>
+          <div>
+            <% checked_ids = escala.users.pluck(:id) %>
+            <% @medicos.each do |medico| %>
+              <div class="form-check">
+                <% is_checked = checked_ids.include?(medico.id) || medico.id == current_user.id %>
+                
+                <% if medico.id != escala.id_medico_adm %>
+                  <%= check_box_tag "escala[user_ids][]", medico.id, is_checked, class: "form-check-input", id: "user_#{medico.id}" %>
+                  <%= label_tag "user_#{medico.id}", "#{medico.first_name} #{medico.last_name}", class: "form-check-label" %>
+                <% else %>
+                  <!-- Campo hidden para garantir o envio do valor -->
+                  <%= hidden_field_tag "escala[user_ids][]", medico.id %>
+                  <!-- Checkbox visível, mas desabilitado -->
+                  <%= check_box_tag nil, medico.id, true, class: "form-check-input", disabled: true, id: "user_#{medico.id}" %>
+                  <%= label_tag "user_#{medico.id}", "#{medico.first_name} #{medico.last_name}", class: "form-check-label" %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
 
         <div class="text-center mb-3">
           <%= form.submit "Save", class: "btn btn-primary" %>

@@ -19,7 +19,7 @@
                   <strong>Escalas:</strong>
                   <ul class="list-unstyled mt-2">
                     <% @escalas.where(id_medico_adm: admin.id).each do |escala| %>
-                      <li><%= escala.setor %> - <%= escala.users.count.to_s + " Médicos" %></li>
+                      <li><strong><%= escala.hospital.nome_hospital %></strong> - <%= escala.setor %></li>
                     <% end %>
                   </ul>
                 </li>

@@ -18,11 +18,13 @@ class EscalasController < ApplicationController
   def new
     @escala = Escala.new
     @medicos = User.where(user_type: ['Medico', 'Medico_adm'])
+    @hospitais = Hospital.all
   end
 
   # GET /escalas/1/edit
   def edit
     @medicos = User.where(user_type: ['Medico', 'Medico_adm'])
+    @hospitais = Hospital.all
   end
 
   # POST /escalas or /escalas.json
@@ -42,6 +44,7 @@ class EscalasController < ApplicationController
   def create
     @escala = Escala.new(escala_params)
     @medicos = User.where(user_type: ['Medico', 'Medico_adm'])
+    @hospitais = Hospital.all
     #@jornada.escala_id = params[:escala_id] # Certifique-se de configurar o id da escala corretamente
 
     respond_to do |format|
@@ -91,6 +94,6 @@ class EscalasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def escala_params
-      params.require(:escala).permit(:id_medico_adm, :setor, :mes_ref, user_ids: [])
+      params.require(:escala).permit(:id_medico_adm, :setor, :mes_ref, :val_jornada, :hospital_id, user_ids: [])
     end
 end

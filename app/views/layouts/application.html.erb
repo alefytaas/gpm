@@ -8,12 +8,38 @@
      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-
+    
     <link rel="icon" href="<%= asset_path 'favicon.ico' %>" type="image/x-icon" />
     
   </head>
 
   <body>
+    <script>
+  document.addEventListener('turbo:load', () => {
+    const hospitalSelect = document.getElementById('escala_hospital_id');
+
+    if (hospitalSelect) {
+      hospitalSelect.addEventListener('change', () => {
+        const hospitalId = hospitalSelect.value;
+
+        fetch(`/hospitals/${hospitalId}/setores.json`)
+          .then(response => response.json())
+          .then(data => {
+            const setorSelect = document.getElementById('setor-select');
+            setorSelect.innerHTML = '';
+
+            data.forEach(setor => {
+              const option = document.createElement('option');
+              option.value = setor;
+              option.textContent = setor;
+              setorSelect.appendChild(option);
+            });
+          });
+      });
+    }
+  });
+</script>
+
   <div class="container-fluid p-0">
     <% if notice %>
       <p class="alert alert-info"><%= notice %></p>

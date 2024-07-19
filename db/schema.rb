@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_13_132052) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_17_142946) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,6 +27,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_13_132052) do
     t.integer "id_medico_adm"
     t.string "setor"
     t.date "mes_ref"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "val_jornada"
+    t.string "hospital"
+    t.bigint "hospital_id"
+    t.index ["hospital_id"], name: "index_escalas_on_hospital_id"
+  end
+
+  create_table "hospitals", force: :cascade do |t|
+    t.string "nome_hospital"
+    t.string "cidade"
+    t.text "setores", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -75,6 +87,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_13_132052) do
 
   add_foreign_key "escala_users", "escalas"
   add_foreign_key "escala_users", "users"
+  add_foreign_key "escalas", "hospitals"
   add_foreign_key "jornadas", "escalas"
   add_foreign_key "jornadas", "users"
   add_foreign_key "shift_swaps", "jornadas"

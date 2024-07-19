@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   resources :jornadas do
     resources :shift_swaps, only: [:new, :create]
   end
+  resources :hospitals, only: [] do
+    get 'setores', on: :member
+  end
   get 'about', to: 'home#about'
   resources :shift_swaps do
     member do
@@ -13,6 +16,7 @@ Rails.application.routes.draw do
   end
   resources :escalas
   get 'home/index'
+  get 'relatorios', to: 'home#relatorios'
   get 'admins', to: 'infos#admins'
   devise_for :users do
     get 'logout' => 'devise/sessions#destroy'

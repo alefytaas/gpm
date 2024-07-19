@@ -9,6 +9,13 @@ class HomeController < ApplicationController
 
 
   end
+
+  def relatorios
+    render pdf: "file",
+    layout: "application.pdf.erb",
+    template: "schedule/relatorio.pdf.erb"
+
+  end
   def month
     @date = Date.parse(params.fetch(:date, Date.today.to_s))
     # @events = Event.where(start_date: @date.all_month)
