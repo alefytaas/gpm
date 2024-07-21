@@ -16,7 +16,10 @@ Rails.application.routes.draw do
   end
   resources :escalas
   get 'home/index'
-  get 'relatorios', to: 'home#relatorios'
+  get 'relatorio', to: 'home#relatorio'
+  get 'new_relatorio', to: 'home#new_relatorio'
+  post 'relatorio', to: 'home#relatorio'
+  get 'medicos_por_escala', to: 'home#medicos_por_escala'
   get 'admins', to: 'infos#admins'
   devise_for :users do
     get 'logout' => 'devise/sessions#destroy'

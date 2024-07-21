@@ -11,4 +11,6 @@ module HomeHelper
       def today_class(day)
         "bg-rose-200" if today?(day)
       end
+
+
 end

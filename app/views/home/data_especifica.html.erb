@@ -1,0 +1,74 @@
+<% @escala = Escala.find(@escala_id) %>
+<% %>
+<% val_total = 0 %>
+<% total_horas = 0 %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório de <%= @data_inicial.strftime("%d/%m/%Y") + " até " + @data_final.strftime("%d/%m/%Y")%></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-4 mb-4">
+  <h3 class="text-center mb-4"> <%="Relatório do dia: " + @data_inicial.strftime("%d/%m/%Y") + " a " + @data_final.strftime("%d/%m/%Y") %></h3>
+  
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th class="text-center">Data</th>
+        <th class="text-center">Detalhes do Plantão</th>
+        <th>Horas plantão</th>
+        <th>Valor plantão</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% jornadas_por_data = @escala.jornadas.where(data: @data_inicial..@data_final).order(:data).group_by(&:data) %>
+      <% jornadas_por_data.each do |data, jornadas| %>
+      <tr>
+        <td><%= data.strftime("%d/%m/%Y") %></td>
+        <td>
+          <!-- Tabela aninhada para as jornadas do dia -->
+          <table class="table table-sm mb-0">
+            <thead>
+              <tr>
+                <th>Médico</th>
+                <th>Setor</th>
+                <th>Turno</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% jornadas.each do |jornada| %>
+              <tr>
+                <td><%= User.find_by(id: jornada.user_id).first_name + " " + User.find_by(id: jornada.user_id).last_name %></td>
+                <td><%= @escala.setor %></td>
+                <td><%= jornada.turno %></td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <% horas = jornadas.sum { |j| j.turno == "Noite" ? 12 : 6 } %>
+          <%= horas %> Horas
+        </td>
+        <td>
+          <% valor_total_dia = jornadas.sum { |j| j.turno == "Noite" ? 2 * @escala.val_jornada : 1 * @escala.val_jornada } %>
+          <%= number_to_currency(valor_total_dia, unit: "R$", separator: ",", delimiter: ".") %>
+        </td>
+        <% val_total += valor_total_dia %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h3 class="text-center mt-4">Total: <%= number_to_currency(val_total, unit: "R$", separator: ",", delimiter: ".") %></h3>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<% @escala = Escala.find(@escala_id)%>
+<% total_horas_escala = 0%>
+<% total_valor_escala = 0%>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mensal Geral - <%= @escala.mes_ref.strftime("%m/%Y") + " " + @escala.setor%></title>
+  <div class="escala-info">
+
+        <h2 class="text-center mb-3 "><%= @escala.setor %> - <%= @escala.mes_ref.strftime("%m/%Y") %> - <%= @escala.hospital.nome_hospital %></h2>
+
+    </div>
+</head>
+<body>
+  
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Horas plantão</th>
+      <th>Valor total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @escala.users.each do |user| %>
+    <tr>
+      <td><%= user.first_name + " " + user.last_name %></td>
+      <% total_plantões = (@escala.jornadas.where(user_id: user.id).where(turno: "Noite").count * 2 + @escala.jornadas.where(user_id: user.id).where.not(turno: "Noite").count) %>
+      <td><%= total_plantões * 6 %> Horas</td>
+      <% total_horas_escala += (total_plantões * 6)%>
+      <td><%= number_to_currency(total_plantões * @escala.val_jornada, unit: "R$", separator: ",", delimiter: ".") %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>Total Horas: <%= total_horas_escala %> Horas</p><p>Total Valor: <%= number_to_currency((total_horas_escala / 6) * @escala.val_jornada, unit: "R$", separator: ",", delimiter: ".") %></p>
+
+
+
+    
+</body>
+</html>
+
+
+

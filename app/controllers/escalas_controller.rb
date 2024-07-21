@@ -62,7 +62,7 @@ class EscalasController < ApplicationController
   def update
     respond_to do |format|
       if @escala.update(escala_params)
-        format.html { redirect_to escala_url(@escala), notice: "Escala atualizada com sucesso!" }
+        format.html { redirect_to escala_path(@escala), notice: "Escala atualizada com sucesso!" }
         format.json { render :show, status: :ok, location: @escala }
       else
         format.html { render :edit, status: :unprocessable_entity }
