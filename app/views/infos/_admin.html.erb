@@ -13,18 +13,27 @@
               <h5 class="card-title mb-0"><%= admin.first_name + " " + admin.last_name %></h5>
             </div>
 
-            <div class="card-text">
-              <ul class="list-unstyled">
-                <li>
-                  <strong>Escalas:</strong>
-                  <ul class="list-unstyled mt-2">
-                    <% @escalas.where(id_medico_adm: admin.id).each do |escala| %>
-                      <li><strong><%= escala.hospital.nome_hospital %></strong> - <%= escala.setor %></li>
-                    <% end %>
-                  </ul>
-                </li>
-              </ul>
-            </div>
+<div class="card-text">
+  <ul class="list-unstyled">
+    <li>
+      <strong>Escalas:</strong>
+      <ul class="list-unstyled mt-2">
+        <% # Agrupar escalas por hospital e setor %>
+        <% hospitais_e_setores = @escalas.where(id_medico_adm: admin.id).group_by { |escala| [escala.hospital, escala.setor] } %>
+
+        <% # Ordenar hospitais e setores pelo nome do hospital e setor %>
+        <% hospitais_e_setores = hospitais_e_setores.sort_by { |(hospital, setor), _| [hospital.nome_hospital, setor] } %>
+
+        <% hospitais_e_setores.each do |(hospital, setor), _| %>
+          <li>
+            <strong><%= hospital.nome_hospital %></strong> - <%= setor %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  </ul>
+</div>
+
           </div>
         </div>
       <% end %>
