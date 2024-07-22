@@ -7,9 +7,9 @@
 <div class="d-flex justify-content-center mt-3">
   <div class="btn-group" role="group">
     <%if Escala.find(@jornada.escala_id).id_medico_adm == current_user.id%>
-    <%= link_to "Edit this jornada", edit_jornada_path(@jornada), class: "btn btn-warning mr-2" %>
+    <%= link_to "Editar Plantão", edit_jornada_path(@jornada), class: "btn btn-warning mr-2" %>
    
-    <%= button_to "Destroy this jornada", @jornada, method: :delete, class: "btn btn-danger" %>
+    <%= button_to "Deletar Plantão", @jornada, method: :delete, class: "btn btn-danger mr-2" %>
     <%end%>
      <%= link_to "Mostrar a escala", @escala, class: "btn btn-primary mr-2" %>
 
