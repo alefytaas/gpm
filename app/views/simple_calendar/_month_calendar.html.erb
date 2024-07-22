@@ -1,26 +1,27 @@
-<% if params["controller"] == "troca_jornadas"%>
-<%end%>
-<%if params["controller"] == "escalas" %><%start_date = @escala.mes_ref%><%end%>
+<% if params["controller"] == "troca_jornadas" %>
+<% end %>
+
+
 
 <div class="simple-calendar">
   <div class="calendar-heading bg-light p-3 mb-3 d-flex justify-content-between align-items-center">
-    <time datetime="<%= start_date.strftime('%Y-%m') %>" class="calendar-title h4 mb-0">
-      <%= t('date.month_names')[start_date.month] %> <%= start_date.year %>
-    </time>
 
-    <%if params["controller"] == "escalas" %>
-    <span class= mt-2><%= @escala.setor %></span><%else%>
 
-    <nav class="mt-2">
-      <%= link_to t('simple_calendar.previous', default: '<'), calendar.url_for_previous_view, class: "btn btn-outline-primary mr-2" %>
-      <%= link_to t('simple_calendar.today', default: 'Atual'), calendar.url_for_today_view, class: "btn btn-outline-success mr-2" %>
-      <%= link_to t('simple_calendar.next', default: '>'), calendar.url_for_next_view, class: "btn btn-outline-primary mr-2" %>
-    </nav>
+      <time datetime="<%= start_date.strftime('%Y-%m') %>" class="calendar-title"><%= t('date.month_names')[start_date.month] %> <%= start_date.year %></time>
 
-    <%end%>
+
+    <% if params["controller"] == "escalas" %>
+      <span class="mt-2"><%= @escala.setor %></span>
+    <% else %>
+      <nav class="mt-2">
+        <%= link_to t('simple_calendar.previous', default: '<'), calendar.url_for_previous_view, class: "btn btn-outline-primary mr-2" %>
+        <%= link_to t('simple_calendar.today', default: 'Atual'), calendar.url_for_today_view, class: "btn btn-outline-success mr-2" %>
+        <%= link_to t('simple_calendar.next', default: '>'), calendar.url_for_next_view, class: "btn btn-outline-primary mr-2" %>
+      </nav>
+    <% end %>
   </div>
 
-<table class="table table-bordered table-striped">
+  <table class="table table-bordered table-striped">
     <thead class="thead-light">
       <tr>
         <% date_range.slice(0, 7).each do |day| %>
@@ -28,71 +29,63 @@
         <% end %>
       </tr>
     </thead>
-
     <tbody>
-
       <% date_range.each_slice(7) do |week| %>
         <tr>
           <% week.each do |day| %>
             <%= content_tag :td, class: calendar.td_classes_for(day) do %>
-            <%= day.strftime('%d') %>
-            <%if params["controller"] == "escalas"%>
-              <%@jornadas.each do |jornada| %>
-                <%if day == jornada.data%>
-                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= jornada.turno + " - " + @users.find(jornada.user_id).first_name %></a>
-                    <div class="dropdown-menu">
-                    <a class="dropdown-item" href="<%= url_for(jornada_path(jornada)) %>">Destalhes do Plantão</a>
-                      <%if @escala.id_medico_adm == current_user.id%>
-                    <a class="dropdown-item" href="<%= url_for(edit_jornada_path(jornada)) %>">Editar Plantão</a>
-                    
-                    <div class="dropdown-divider"></div>
-                    <%= button_to "Destroy this jornada", jornada, method: :delete, data: { confirm: "Isso vai deletar definitivamente este Plantão!", turbo_confirm: "Isso vai deletar definitivamente este Plantão!" }, class: "dropdown-item btn btn-outline-danger text-left" %>
-                    
-                    </div>
-                    <%end%>
-                    
-                    </li>
-                  </ul>
-                  
-                  
-                <%end%>
-                <%end%>
-                <div class="d-flex justify-content-center">
-                <% if @escala.id_medico_adm == current_user.id && params["controller"] == "escalas"%>
-                <a href="<%= new_jornada_path(escala_id: @escala.id, data: day) %>" class="button">+</a>
-              <% end %>
-              </div>
-            <%end%>
-            <%if params["controller"] == "home" %>
-              <%current_user.escalas.each do |escala|%>
-                <%escala.jornadas.each do |jornada|%>
-                  <%if day == jornada.data and jornada.user_id == current_user.id%>
+              <%= day.strftime('%d') %>
+              <% if params["controller"] == "escalas" %>
+                <% @jornadas.each do |jornada| %>
+                  <% if day == jornada.data %>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= @escala.find(jornada.escala_id).setor + "/" + jornada.turno %></a>
-                    <div class="dropdown-menu">
-                      <% if day >= Date.today%>
-                    <a class="dropdown-item" href="<%= url_for(jornada_path(jornada) + "/shift_swaps/new") %>">Solicitar troca de platão</a>
-                    <%end%>
-                      <a class="dropdown-item" href="<%= url_for(jornada_path(jornada))  %>">Destalhes de Plantão</a>
-
-                    </div>
-                    
-                    </li>
-                  </ul>
-                    
-                  <%end%>
-                <%end%>
-              <%end%>
-            <% end %>
-            
-            <% end %>
-              <%end%>
-
-                </tr>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                          <%= jornada.turno + " - " + @users.find(jornada.user_id).first_name %>
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="<%= url_for(jornada_path(jornada)) %>">Detalhes do Plantão</a>
+                          <% if @escala.id_medico_adm == current_user.id %>
+                            <a class="dropdown-item" href="<%= url_for(edit_jornada_path(jornada)) %>">Editar Plantão</a>
+                            <div class="dropdown-divider"></div>
+                            <%= button_to "Deletar Plantão", jornada, method: :delete, data: { confirm: "Isso vai deletar definitivamente este Plantão!", turbo_confirm: "Isso vai deletar definitivamente este Plantão!" }, class: "dropdown-item btn btn-outline-danger text-left" %>
+                          <% end %>
+                        </div>
+                      </li>
+                    </ul>
+                  <% end %>
+                <% end %>
+                <div class="d-flex justify-content-center">
+                  <% if @escala.id_medico_adm == current_user.id %>
+                    <a href="<%= new_jornada_path(escala_id: @escala.id, data: day) %>" class="button">+</a>
+                  <% end %>
+                </div>
               <% end %>
+              <% if params["controller"] == "home" %>
+                <% current_user.escalas.each do |escala| %>
+                  <% escala.jornadas.each do |jornada| %>
+                    <% if day == jornada.data && jornada.user_id == current_user.id %>
+                      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <%= escala.setor + "/" + jornada.turno %>
+                          </a>
+                          <div class="dropdown-menu">
+                            <% if day >= Date.today %>
+                              <a class="dropdown-item" href="<%= url_for(jornada_path(jornada) + "/shift_swaps/new") %>">Solicitar troca de plantão</a>
+                            <% end %>
+                            <a class="dropdown-item" href="<%= url_for(jornada_path(jornada)) %>">Detalhes do Plantão</a>
+                          </div>
+                        </li>
+                      </ul>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 </div>

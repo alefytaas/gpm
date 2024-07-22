@@ -15,8 +15,10 @@ class HomeController < ApplicationController
   end
 
   def relatorio
+    if(params[:start_date] != "" || params[:end_date] != "")
     @data_inicial =  Date.parse(params[:start_date])
     @data_final =   Date.parse(params[:end_date])
+    end
     @escala_id = params[:escala_id]
     @type_relatorio = params[:type_relatorio]
     @medico_id = params[:medico_id]

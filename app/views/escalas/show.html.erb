@@ -1,10 +1,7 @@
 <%= render "home/head" %>
 <p style="color: green"><%= notice %></p>
 
-
-<%= month_calendar do |date| %>
-  <%= date.strftime("%d") %>
-  
-  <% end %>
-
-
+<% start_date = @escala.mes_ref.to_date %>
+<%= month_calendar start_date: start_date, month: start_date do |date| %>
+  <%= date.strftime('%d') %>
+<% end %>
